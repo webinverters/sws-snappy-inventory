@@ -33,5 +33,19 @@ module.exports = function(options) {
 
   config.secrets = {}; // winconfig.loadSecrets('.'+config.app.alias, config.env);
 
+
+  config.logging = {
+    name: config.app.alias,
+    errorFile: './errors.log',
+    logFile: './info.log',
+    debug: config.debug,
+    slackLoggingEnabled: false,
+    slackConfig: {
+      webhook_url: "",
+        channel: "",
+        username: "bot"
+    }
+  };
+
   return config;
 };

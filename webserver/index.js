@@ -22,10 +22,10 @@ module.exports = function(config) {
     ,bodyParser = require('body-parser')
     ,compress = require('compression')
     ,morgan = require('morgan')
-    ,consolidate = require('consolidate')
-    ,routes = require('./routes');
+    ,consolidate = require('consolidate');
 
   server.set('port', config.port);
+  log('Setting static dir:', config.staticDir);
   server.use(express.static(config.staticDir));
   server.use(bodyParser.urlencoded({extended: true}));
   server.use(bodyParser.json());
@@ -42,8 +42,6 @@ module.exports = function(config) {
 
   setupMiddleware(server);
 
-  setupDefaultRoutes(server);
-
   function setupMiddleware(server) {
     server.use(function(req, res, next) {
       res.locals.url = req.protocol + ':// ' + req.headers.host + req.url;
@@ -58,15 +56,13 @@ module.exports = function(config) {
       level: 9
     }));
 
-    server.use(JWTAuthSessions('secret'));
-
     server.engine('.html', consolidate['swig']);
 
     // Set views path and view engine
     server.set('view engine', '.html');
     server.set('views', './server/views');
 
-    server.use(express.static(config.filePaths.build.dest));
+    server.use(express.static(config.staticDir));
     if (appConfig.debug) {
       // Enable logger (morgan)
       server.use(morgan('dev'));
@@ -76,18 +72,11 @@ module.exports = function(config) {
       server.set('view cache', false);
 
       server.use(function(req, res, next) {
-        log('BODY:',req.body);
+        debug('Body:',req.body);
+        debug('Headers', req.headers);
         next();
       });
     }
-
-    setupAuthentication(server);
-  }
-
-  function setupDefaultRoutes(server) {
-    server.all('/*', function(req, res) {
-      res.sendfile('/', { root: config.staticDir });
-    });
   }
 
   function initTemplateVariables() {
@@ -113,7 +102,6 @@ module.exports = function(config) {
     });
   }
 
-  function setupAuthentication(server) {
-  }
+  return server;
 };
 
