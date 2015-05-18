@@ -71,8 +71,21 @@ var paths = {
   images: 'front/img/**/*.*',
   templates: 'front/templates/**/*.html',
   index: 'front/index.html',
-  bower_fonts: 'front/components/**/*.{ttf,woff,eof,svg}',
+  bower_fonts: 'front/components/**/*.{ttf,woff,eof,svg}'
 };
+
+var browserify = require('gulp-browserify');
+
+// Basic usage
+gulp.task('scripts', function() {
+  // Single entry point to browserify
+  gulp.src('front/index.js')
+    .pipe(browserify({
+      insertGlobals : true,
+      debug : process.env.NODE_ENV != 'prod'
+    }))
+    .pipe(gulp.dest('./public'))
+});
 
 /**
  * Handle bower components from index
@@ -159,5 +172,5 @@ gulp.task('livereload', function() {
 /**
  * Gulp tasks
  */
-gulp.task('build', ['usemin', 'build-assets', 'build-custom']);
+gulp.task('build', ['usemin', 'build-assets', 'build-custom', 'scripts']);
 gulp.task('default', ['build', 'webserver', 'livereload', 'watch']);
