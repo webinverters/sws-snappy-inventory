@@ -82,6 +82,9 @@ module.exports = function () {
       },
       error: function() {
         this._log('error', arguments);
+      },
+      logError: function() {
+        this._log('error', arguments);
       }
     };
     return Logger;

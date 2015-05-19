@@ -25,10 +25,15 @@ module.exports = function(config) {
     ,consolidate = require('consolidate');
 
   server.set('port', config.port);
+
   log('Setting static dir:', config.staticDir);
   server.use(express.static(config.staticDir));
   server.use(bodyParser.urlencoded({extended: true}));
   server.use(bodyParser.json());
+  server.engine('.html', consolidate['swig']);
+  // Set views path and view engine
+  server.set('view engine', '.html');
+  server.set('views', './server/views');
 
   server.listen(server.get('port'), '0.0.0.0', function() {
     log(util.format("%s is running at localhost: %s", appConfig.app.alias, server.get('port')));
@@ -56,13 +61,6 @@ module.exports = function(config) {
       level: 9
     }));
 
-    server.engine('.html', consolidate['swig']);
-
-    // Set views path and view engine
-    server.set('view engine', '.html');
-    server.set('views', './server/views');
-
-    server.use(express.static(config.staticDir));
     if (appConfig.debug) {
       // Enable logger (morgan)
       server.use(morgan('dev'));

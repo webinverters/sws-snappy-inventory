@@ -4,7 +4,8 @@ var gulp = require('gulp'),
     bump = require('gulp-bump'),
     filter = require('gulp-filter'),
     tag_version = require('gulp-tag-version'),
-    jsdoc = require("gulp-jsdoc");
+    jsdoc = require("gulp-jsdoc"),
+    _ = require('lodash');
 
 /**
  * Bumping version number and tagging the repository with it.
@@ -63,13 +64,14 @@ var usemin = require('gulp-usemin'),
   concat = require('gulp-concat'),
   less = require('gulp-less'),
   rename = require('gulp-rename'),
-  minifyHTML = require('gulp-minify-html');
+  minifyHTML = require('gulp-minify-html'),
+  flatten = require('gulp-flatten');
 
 var paths = {
   scripts: 'front/js/**/*.*',
-  styles: 'front/less/**/*.*',
+  styles: 'front/styles/**/*.*',
   images: 'front/img/**/*.*',
-  templates: 'front/templates/**/*.html',
+  templates: ['front/**/*.html','front/modules/**/*.html'],
   index: 'front/index.html',
   bower_fonts: 'front/components/**/*.{ttf,woff,eof,svg}'
 };
@@ -129,15 +131,17 @@ gulp.task('custom-js', function() {
     .pipe(gulp.dest('public/js'));
 });
 
+var sass = require('gulp-sass');
 gulp.task('custom-less', function() {
   return gulp.src(paths.styles)
-    .pipe(less())
+    .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('public/css'));
 });
 
 gulp.task('custom-templates', function() {
   return gulp.src(paths.templates)
     .pipe(minifyHTML())
+    .pipe(flatten())
     .pipe(gulp.dest('public/templates'));
 });
 
@@ -147,30 +151,28 @@ gulp.task('custom-templates', function() {
 gulp.task('watch', function() {
   gulp.watch([paths.images], ['custom-images']);
   gulp.watch([paths.styles], ['custom-less']);
-  gulp.watch([paths.scripts], ['custom-js']);
+  gulp.watch(['front/**/*.js'], ['custom-js', 'scripts']);
   gulp.watch([paths.templates], ['custom-templates']);
   gulp.watch([paths.index], ['usemin']);
 });
 
-/**
+var server = require('gulp-express');
+  /**
  * Live reload server
  */
 gulp.task('webserver', function() {
-  connect.server({
-    root: 'public',
-    livereload: true,
-    port: 8888
-  });
+  server.run(['index.js']);
+  gulp.watch(['public/**/*.*'], server.notify);
 });
 
-gulp.task('livereload', function() {
-  gulp.src(['public/**/*.*'])
-    .pipe(watch())
-    .pipe(connect.reload());
-});
+//gulp.task('livereload', function() {
+//  gulp.src(['public/**/*.*'])
+//    .pipe(watch())
+//    .pipe(connect.reload());
+//});
 
 /**
  * Gulp tasks
  */
 gulp.task('build', ['usemin', 'build-assets', 'build-custom', 'scripts']);
-gulp.task('default', ['build', 'webserver', 'livereload', 'watch']);
+gulp.task('default', ['build', 'webserver', 'watch']);

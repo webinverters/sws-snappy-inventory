@@ -3,9 +3,9 @@
  */
 
 angular.module('RDash')
-    .controller('MasterCtrl', ['$scope', 'localStorageService', MasterCtrl]);
+    .controller('MasterCtrl', ['$scope', 'localStorageService', 'authSvc', MasterCtrl]);
 
-function MasterCtrl($scope, localStorageService) {
+function MasterCtrl($scope, localStorageService, authSvc) {
     /**
      * Sidebar Toggle & Cookie Control
      */
@@ -25,12 +25,15 @@ function MasterCtrl($scope, localStorageService) {
         } else {
             $scope.toggle = false;
         }
-
     });
 
     $scope.toggleSidebar = function() {
       $scope.toggle = !$scope.toggle;
       localStorageService.set('toggle', $scope.toggle);
+    };
+
+    $scope.isLoggedIn = function() {
+      return authSvc.currentIdentity() != null;
     };
 
     window.onresize = function() {

@@ -20,12 +20,14 @@
   <!-- endbuild -->
   <!-- Custom Scripts -->
   <script type="text/javascript" src="js/dashboard.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/app.css">
+  <base href="/">  <!-- base required for html5mode -->
 </head>
 <body ng-controller="MasterCtrl">
   <div id="page-wrapper" ng-class="{'open': toggle}" ng-cloak>
 
     <!-- Sidebar -->
-    <div id="sidebar-wrapper">
+    <div id="sidebar-wrapper" ng-show="isLoggedIn()">
       <ul class="sidebar">
         <li class="sidebar-main">
           <a ng-click="toggleSidebar()">
@@ -66,7 +68,7 @@
       <div class="page-content">
 
         <!-- Header Bar -->
-        <div class="row header">
+        <div class="row header" ng-show="isLoggedIn()">
           <div class="col-xs-12">
             <div class="user pull-right">
               <div class="item dropdown">
@@ -81,16 +83,6 @@
                   <li class="link">
                     <a href="#">
                       Profile
-                    </a>
-                  </li>
-                  <li class="link">
-                    <a href="#">
-                      Menu Item
-                    </a>
-                  </li>
-                  <li class="link">
-                    <a href="#">
-                      Menu Item
                     </a>
                   </li>
                   <li class="divider"></li>

@@ -36,11 +36,13 @@ var robustAuth = require('robust-auth')({
 robustAuth.attach(server);
 api.attach(server);
 
-//function setupDefaultRoutes(server) {
-//  server.all('/*', function(req, res) {
-//    res.sendfile('/', { root: config.staticDir });
-//  });
-//}
-//
-//setupDefaultRoutes(server);
+function setupDefaultRoutes(server) {
+  server.all('/*', function(req, res) {
+    res.sendfile('public/index.html');
+  });
+}
+
+setupDefaultRoutes(server);
+
+module.exports = server;
 
