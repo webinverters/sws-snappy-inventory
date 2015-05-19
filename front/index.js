@@ -25,11 +25,21 @@ angular.module('monitor', [
   'win.robust-auth-client'
 ])
   .constant('config', require('./config')())
-  .config(['localStorageServiceProvider', '$locationProvider', function(localStorageServiceProvider, $locationProvider) {
+  .config(['localStorageServiceProvider', '$locationProvider', '$urlRouterProvider',
+    function(localStorageServiceProvider, $locationProvider, $urlRouterProvider) {
     localStorageServiceProvider
       .setPrefix('monitor');
 
     $locationProvider.html5Mode(true).hashPrefix('!');
+
+    // For unmatched routes
+    //$urlRouterProvider.otherwise('/');
+
+    //FIXES ISSUE: https://github.com/angular-ui/ui-router/issues/1022
+    $urlRouterProvider.otherwise(function($injector) {
+      var $state = $injector.get('$state');
+      $state.go('index');
+    });
   }])
 
   // create an alias for localStorageService:
@@ -42,28 +52,7 @@ angular.module('monitor', [
     return Logger.getInstance('app');
   }])
   // ROUTES:
-  .config(['$stateProvider', '$urlRouterProvider',
-  function($stateProvider, $urlRouterProvider) {
-
-    // For unmatched routes
-    $urlRouterProvider.otherwise('/');
-
-    // Application routes
-    $stateProvider
-      .state('index', {
-        url: '/',
-        templateUrl: 'templates/dashboard.html'
-      })
-      .state('tables', {
-        url: '/tables',
-        templateUrl: 'templates/tables.html'
-      })
-      .state('login', {
-        url:'login',
-        templateUrl: 'templates/login.html'
-      });
-  }
-  ])
+  .config(['$stateProvider', '$urlRouterProvider', require('./routes')])
   .run(['$rootScope', '$location', '$state', 'authSvc', function($rootScope, $location,
                                                                  $state, authSvc) {
     $rootScope.$on( '$stateChangeStart', function(e, toState  , toParams
@@ -76,10 +65,21 @@ angular.module('monitor', [
       // now, redirect only not authenticated
 
       var userInfo = authSvc.currentIdentity();
-
       if(!userInfo) {
-        e.preventDefault(); // stop current execution
         $state.go('login'); // go to login
+        e.preventDefault(); // stop current execution
+        return;
+      }
+
+      // authenticated (previously) coming not to root main
+      if(userInfo) {
+        var shouldGoToMain = fromState.name === ""
+          && toState.name !== "index" ;
+
+        if (shouldGoToMain) {
+          $state.go('index');
+          event.preventDefault();
+        }
       }
     });
   }])

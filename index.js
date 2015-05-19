@@ -45,4 +45,3 @@ function setupDefaultRoutes(server) {
 setupDefaultRoutes(server);
 
 module.exports = server;
-
