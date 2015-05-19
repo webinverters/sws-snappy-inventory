@@ -71,3 +71,6 @@ Icon
 
 # Bower components
 /src/components
+
+errors.log
+info.log

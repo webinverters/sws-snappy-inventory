@@ -58,6 +58,7 @@
     "consolidate": "^0.12.1",
     "express": "^4.12.3",
     "jwt-simple": "^0.3.0",
+    "lodash": "^3.8.0",
     "morgan": "^1.5.3",
     "ng-api-client": "~0.0.3",
     "proxy-middleware": "^0.11.1",

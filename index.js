@@ -8,7 +8,7 @@ require('win-common')(config);
 var server = require('./webserver')(config);
 var api = require('./api')(config);
 var robustAuth = require('robust-auth')({
-    secret: 'ilovecodedkjfkdjdkfjdkfjkdjfkdjfkfjasdf',
+    secret: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
     routesNotRequiringAuthentication: {
       "/":true,
       "/index":true,
@@ -27,7 +27,7 @@ var robustAuth = require('robust-auth')({
   },
   getUserTokenInfo: function () {
     return p.resolve({
-      key: 'sher',
+      key: 'xxx',
       secretHash: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.Inh4eCI.aW-oU4sRULP-XLY9F9Ux8HG4Gmvn9CCihzd_N3ENRG8'
     });
   }
