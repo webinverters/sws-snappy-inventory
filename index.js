@@ -15,13 +15,13 @@ var robustAuth = require('robust-auth')({
       "/public":true
     }
   }, {
-  create: function (resourceName, resource) {
+  addAuthUser: function (resourceName, resource) {
     return p.resolve().then(function () {
       log(resourceName, resource);
       return {key: 'sher'};
     });
   },
-  delete: function (resourceName, id) {
+  deleteUser: function (resourceName, id) {
   },
   update: function () {
   },

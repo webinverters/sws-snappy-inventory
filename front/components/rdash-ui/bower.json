@@ -27,8 +27,7 @@
         "!bower.json",
         "!README.md",
         "!dist/css",
-        "!dist/fonts",
-        "!less/"
+        "!dist/fonts"
     ],
     "dependencies": {}
 }

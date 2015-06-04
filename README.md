@@ -20,7 +20,7 @@ A short description of the motivation behind the creation and maintenance of the
 1. Clone the repository.
 2. Install the NodeJS dependencies: `sudo npm install`.
 3. Install the Bower dependencies: `bower install`.
-4. Run the gulp build task: `gulp build`.
+4. Run the gulp build task: `gulp build`.  -- you will probably have to copy rdash-ui repo from github since bower installs it incorrectly and you get errors on this step.
 5. Run the gulp default task: `gulp`. This will build any changes made automatically, and also run a live reload server on [http://localhost:8888](http://localhost:8888).
 
 ## API Reference
