@@ -35,16 +35,10 @@ module.exports = function(options) {
 
 
   config.logging = {
-    name: config.app.alias,
-    errorFile: './errors.log',
-    logFile: './info.log',
-    debug: config.debug,
-    slackLoggingEnabled: false,
-    slackConfig: {
-      webhook_url: "",
-        channel: "",
-        username: "bot"
-    }
+    debug: config.env!='prod',
+    name: 'SnappyInvAdmin',
+    app: 'SWS-Snappy-Inventory',
+    env: config.env
   };
 
   return config;

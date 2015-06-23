@@ -4,6 +4,8 @@ var config = require('./config')({
 });
 
 require('win-common')(config);
+global.logger = require('win-with-logs')(config.logging);
+
 
 var server = require('./webserver')(config);
 var api = require('./api')(config);
@@ -31,7 +33,7 @@ var robustAuth = require('robust-auth')({
       secretHash: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.Inh4eCI.aW-oU4sRULP-XLY9F9Ux8HG4Gmvn9CCihzd_N3ENRG8'
     });
   }
-}, null, wincommon.logger);
+}, null, global.logger);
 
 robustAuth.attach(server);
 api.attach(server);
