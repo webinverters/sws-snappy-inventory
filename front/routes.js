@@ -17,6 +17,11 @@ module.exports = function($stateProvider) {
       url: '/',
       templateUrl: 'templates/dashboard.html'
     })
+    .state('inventory-manager', {
+      url: '/inventory-manager',
+      templateUrl: 'templates/main.html',
+      controller: 'main-ctrl'
+    })
     .state('tables', {
       url: '/tables',
       templateUrl: 'templates/tables.html'

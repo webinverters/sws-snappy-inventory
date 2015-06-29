@@ -15,6 +15,9 @@ window._ = require('lodash');
 
 require('ng-api-client');
 require('win.robust-auth-client');
+require('./modules/inventory-management');
+require('./modules/sws-api');
+
 
 angular.module('monitor', [
   'ui.bootstrap',
@@ -22,7 +25,9 @@ angular.module('monitor', [
   'RDash',
   'LocalStorageModule',
   'win.api-client',
-  'win.robust-auth-client'
+  'win.robust-auth-client',
+  'inventory-management',
+  'sws-api'
 ])
   .constant('config', require('./config')())
   .config(['localStorageServiceProvider', '$locationProvider', '$urlRouterProvider',
@@ -64,12 +69,12 @@ angular.module('monitor', [
 
       // now, redirect only not authenticated
 
-      var userInfo = authSvc.currentIdentity();
-      if(!userInfo) {
-        $state.go('login'); // go to login
-        e.preventDefault(); // stop current execution
-        return;
-      }
+      //var userInfo = authSvc.currentIdentity();
+      //if(!userInfo) {
+      //  $state.go('login'); // go to login
+      //  e.preventDefault(); // stop current execution
+      //  return;
+      //}
 
       // authenticated (previously) coming not to root main
       if(userInfo) {
