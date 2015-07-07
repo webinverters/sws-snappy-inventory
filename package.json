@@ -62,7 +62,7 @@
     "morgan": "^1.5.3",
     "ng-api-client": "~0.0.3",
     "proxy-middleware": "^0.11.1",
-    "robust-auth": "~0.0.3",
+    "robust-auth": "0.0.20",
     "url": "^0.10.3",
     "win-common": "~0.0.34",
     "win-with-logs": "0.0.27",
